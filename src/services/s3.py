@@ -3,6 +3,10 @@ import json
 from datetime import datetime
 from src.configs.credentials import BUCKET_NAME
 
+class MockS3():
+    def check_exist_file(self, filepath):
+        return False
+
 class S3:
     def __init__(self, bucket_name=BUCKET_NAME):
         '''
@@ -11,6 +15,12 @@ class S3:
         self.bucket_name = bucket_name
         self.client = boto3.client('s3')
         self.resource = boto3.resource('s3')
+        try:
+            self.client.head_bucket(Bucket=self.bucket_name)
+        except:
+            print('bucket not found')
+            self.client.create_bucket
+        
 
     def upload(self, data, filepath):
         '''

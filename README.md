@@ -7,9 +7,6 @@ This is a serverless aplication made to be run over AWS Lambda service.
 `npm install serverless-requirements-plugin serverless-dotenv-plugin`
 `pip install -r requirements.txt`
 
-
-
-
 # Testing
 export all Enviroment Variables using:
 `export $(xargs < .env)`

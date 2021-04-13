@@ -3,14 +3,17 @@
 
 def api_handler(event=None, context=None):
     import json
-    from src.services.s3 import S3
+    from src.services.s3 import S3, MockS3
     from src.services.metafiles import RadarImageMetadata
     from src.helpers.requests import send_request
     from src.helpers.data import multi_threading
     from src.configs.redemet_info import REDEMET_INFO
     print(event)
+    if event.get('debug'):
+        bucket = MockS3()
+    else:
+        bucket = S3()
 
-    bucket = S3()
     radars_meta = RadarImageMetadata()
     params = {
         'api_key': REDEMET_INFO['api_key'],
@@ -58,10 +61,10 @@ def api_handler(event=None, context=None):
                 f.write(image_response.content)                
         else:
             bucket.upload(image_response.content, f"imagens/{file_name}")
-            radars_meta.add_radar(radar_tag, file_name)
+        radars_meta.add_radar(radar_tag, file_name)
 
     if event.get('debug'):
-        print(radars_meta)
+        print(radars_meta.radar_images)
     else:
         image_metadata = json.dumps(radars_meta.radar_images, sort_keys=True, default=str)
         bucket.upload(image_metadata, 'radares.json')

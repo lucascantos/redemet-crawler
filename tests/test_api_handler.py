@@ -1,5 +1,5 @@
 import pytest
-from src.handler import api_handler
+from handler import api_handler
 
 def test_api_handler():
     event = {'debug': True}

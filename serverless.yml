@@ -31,7 +31,7 @@ provider:
 
 functions:
   get-redemet-api:
-    handler: src/handler.api_handler
+    handler: handler.api_handler
     memorySize: 128
     timeout: 270
     events:
