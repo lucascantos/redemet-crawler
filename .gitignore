@@ -19,8 +19,8 @@ __pycache__
 .vscode
 .pytest_cache
 out/*
+node_modules
 
 # Serverless directories
 .serverless
-.env
 *.log

@@ -3,11 +3,11 @@ service: redemet-crawler
 plugins:
   - serverless-python-requirements
   - serverless-dotenv-plugin
+  - serverless-offline
 
 custom:
   pythonRequirements:
     dockerizePip: non-linux
-  SNS_ERROR_PATH: ${env:DEFAULT_REGION}:${env:AWS_ID}:${env:SNS_ERROR_TOPIC}
 
 provider:
   name: aws
@@ -35,7 +35,6 @@ functions:
     memorySize: 128
     timeout: 270
     events:
-      - schedule: rate(5 minutes)
+      # - schedule: rate(5 minutes)
     reservedConcurrency: 1
-    onError: arn:aws:sns:${self:custom.SNS_ERROR_PATH}
 

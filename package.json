@@ -1,0 +1,20 @@
+{
+  "name": "redemet-crawler",
+  "version": "1.0.0",
+  "description": "A webcrawler for radar imagery from Brazil's airforce webpage. This is a serverless aplication made to be run over AWS Lambda service.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucascantos/redemet-crawler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucascantos/redemet-crawler/issues"
+  },
+  "homepage": "https://github.com/lucascantos/redemet-crawler#readme",
+  "dependencies": {
+    "serverless-dotenv-plugin": "^3.9.0",
+    "serverless-offline": "^6.9.0",
+    "serverless-python-requirements": "^5.1.1"
+  }
+}
