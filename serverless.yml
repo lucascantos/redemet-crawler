@@ -32,11 +32,10 @@ provider:
 functions:
   redemet-crawler:
     handler: handler.redemet_crawler
-    reservedConcurrency: 1
     memorySize: 128
     timeout: 270
     events:
-      - schedule: rate(5 minutes)
+      # - schedule: rate(5 minutes)
 
   latest-images:
     handler: handler.check_redemet
