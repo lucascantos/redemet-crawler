@@ -112,7 +112,6 @@ class S3:
             print(f"The file {filepath} already exist!")
             return True
         except ClientError as e:
-            print(e.response["ResponseMetadata"]["HTTPStatusCode"])
             if e.response["ResponseMetadata"]["HTTPStatusCode"] >= 400:
                 return False
 

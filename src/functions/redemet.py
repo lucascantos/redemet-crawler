@@ -52,7 +52,8 @@ class RedemetImages:
             response = send_request(radar['path'])
             return response
 
-        for image_response, radar in zip(multi_threading(_grab_images, valid_radars), valid_radars):
+        for image_response,radar in zip(multi_threading(_grab_images, valid_radars), valid_radars):
+            print(radar)
             image_url = radar['path']
             radar_tag = radar['localidade']
             filename = f"{radar_tag}/{image_url.split('/')[-1]}"

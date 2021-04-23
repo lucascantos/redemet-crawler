@@ -1,6 +1,6 @@
 import pytest
-from handler import api_handler
+from handler import redemet_crawler
 
 def test_api_handler():
     event = {'debug': True}
-    assert api_handler(event)
+    assert redemet_crawler(event)
