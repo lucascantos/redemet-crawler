@@ -109,7 +109,7 @@ class S3:
         from botocore.errorfactory import ClientError
         try:
             self.client.head_object(Bucket=self.bucket_name, Key=filepath)
-            print(f"The file {filepath} already exist!")
+            # print(f"The file {filepath} already exist!")
             return True
         except ClientError as e:
             if e.response["ResponseMetadata"]["HTTPStatusCode"] >= 400:

@@ -18,7 +18,6 @@ class RedemetImages:
             'api_key': REDEMET_INFO.get('api_key'),
             'anima': 8
         }
-        print(REDEMET_INFO)
         url = REDEMET_INFO.get('url')
         last_image_id = params['anima']-1
         redemet_response = send_request(url, params)
@@ -40,7 +39,6 @@ class RedemetImages:
     
     def download_images(self, valid_radars, debug=False):
         def _grab_images(radar):
-            print(radar)
             response = send_request(radar['path'])
             return response
 
