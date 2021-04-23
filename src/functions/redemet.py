@@ -42,11 +42,12 @@ class RedemetImages:
     
     def download_images(self, valid_radars, debug=False):
         def _grab_images(radar):
+            print(radar)
             response = send_request(radar['path'])
             return response
-
-        for image_response,radar in zip(multi_threading(_grab_images, valid_radars), valid_radars):
-            print(radar)
+            
+        new_images = [radar for radar in valid_radars if radar['path']]
+        for image_response,radar in zip(multi_threading(_grab_images, new_images), new_images):
             image_url = radar['path']
             radar_tag = radar['localidade']
             filename = f"{radar_tag}/{image_url.split('/')[-1]}"
