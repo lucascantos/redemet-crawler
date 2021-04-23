@@ -3,13 +3,6 @@ from src.services.s3 import S3, MockS3
 from src.helpers.response import send_request
 from src.helpers.data import multi_threading
 from src.configs.redemet_info import REDEMET_INFO
-
-class RadarImageMetadata:
-    def __init__(self):
-        self.radar_images = {}
-    
-    def add_radar(self, radar_code, filepath):
-        self.radar_images[radar_code] = filepath
     
 class RedemetImages:
     def __init__(self):
@@ -19,14 +12,14 @@ class RedemetImages:
             self.radar_images = self.bucket.load(self.meta_file)
         except:
             self.radar_images = {}
-        self.radars_meta = RadarImageMetadata()
 
     def get_image_list(self):
         params = {
-            'api_key': REDEMET_INFO['api_key'],
+            'api_key': REDEMET_INFO.get('api_key'),
             'anima': 8
         }
-        url = REDEMET_INFO.pop('url')
+        print(REDEMET_INFO)
+        url = REDEMET_INFO.get('url')
         last_image_id = params['anima']-1
         redemet_response = send_request(url, params)
         if redemet_response.status_code == 200:
