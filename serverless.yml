@@ -30,11 +30,18 @@ provider:
 
 
 functions:
-  get-redemet-api:
-    handler: handler.api_handler
+  redemet-crawler:
+    handler: handler.redemet_crawler
+    reservedConcurrency: 1
     memorySize: 128
     timeout: 270
     events:
       # - schedule: rate(5 minutes)
-    reservedConcurrency: 1
 
+  latest-images:
+    handler: handler.check_redemet
+    events:
+      - http: 
+          path: /images
+          method: get
+          cors: false

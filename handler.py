@@ -21,5 +21,6 @@ def check_redemet(event=None, context=None):
     from src.helpers.response import make_response
     redemet = RedemetImages()
     radar_list = redemet.get_image_list()
-    updated_radar_list = redemet.valid_images(radar_list)
-    return make_response({'radars': updated_radar_list})
+    valid_images = redemet.valid_images(radar_list)
+    
+    return make_response({'radars': dict(valid_images)})

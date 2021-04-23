@@ -1,13 +1,24 @@
 
 from src.services.s3 import S3, MockS3
-from src.services.metafiles import RadarImageMetadata
-from src.helpers.requests import send_request
+from src.helpers.response import send_request
 from src.helpers.data import multi_threading
 from src.configs.redemet_info import REDEMET_INFO
 
+class RadarImageMetadata:
+    def __init__(self):
+        self.radar_images = {}
+    
+    def add_radar(self, radar_code, filepath):
+        self.radar_images[radar_code] = filepath
+    
 class RedemetImages:
     def __init__(self):
         self.bucket = S3()
+        self.meta_file = 'redemet-images.json'
+        try:
+            self.radar_images = self.bucket.load(self.meta_file)
+        except:
+            self.radar_images = {}
         self.radars_meta = RadarImageMetadata()
 
     def get_image_list(self):
@@ -28,12 +39,13 @@ class RedemetImages:
             image_url = radar['path']
             if image_url:    
                 radar_tag = radar['localidade']
-                file_name = f"{radar_tag}_{image_url.split('/')[-1]}"
-                if self.bucket.check_exist_file(file_name):
-                    print(f"The file {file_name} already exists, we will continue without making the request to REDEMET.")
-                    self.radars_meta.add_radar(radar_tag, file_name)
+                filepath = f"{radar_tag}/{image_url.split('/')[-1]}"
+                self.radar_images.setdefault(radar_tag, radar)
+                if self.bucket.check_exist_file(filepath):
+                    print(f"The file {filepath} already exists, we will continue without making the request to REDEMET.")
                     image_list[index]['path'] = None
-            yield image_url
+                    self.radar_images[radar_tag]['s3'] = filepath
+            yield radar_tag, self.radar_images[radar_tag]
     
     def download_images(self, valid_radars, debug=False):
         def _grab_images(radar):
@@ -43,15 +55,15 @@ class RedemetImages:
         for image_response, radar in zip(multi_threading(_grab_images, valid_radars), valid_radars):
             image_url = radar['path']
             radar_tag = radar['localidade']
-            file_name = f"{radar_tag}_{image_url.split('/')[-1]}"
+            filename = f"{radar_tag}/{image_url.split('/')[-1]}"
             if image_response is None:
                 print(f"Location Code: {radar['localidade']}")
                 continue
             #Upload image to bucket
             if debug:
-                print(file_name)
-                with open(f"out/{file_name}", 'wb') as f:
+                print(f"{radar_tag}_{image_url.split('/')[-1]}")
+                with open(f"out/{radar_tag}_{image_url.split('/')[-1]}", 'wb') as f:
                     f.write(image_response.content)                
             else:
-                self.bucket.upload(image_response.content, f"imagens/{file_name}")
-            self.radars_meta.add_radar(radar_tag, file_name)
+                self.bucket.upload(image_response.content, filename)
+                self.radar_images[radar_tag]['s3'] = filename

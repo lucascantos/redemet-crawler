@@ -109,11 +109,12 @@ class S3:
         from botocore.errorfactory import ClientError
         try:
             self.client.head_object(Bucket=self.bucket_name, Key=filepath)
+            print(f"The file {filepath} already exist!")
+            return True
         except ClientError as e:
-            if e.response["ResponseMetadata"]["HTTPStatusCode"] == 404:
+            print(e.response["ResponseMetadata"]["HTTPStatusCode"])
+            if e.response["ResponseMetadata"]["HTTPStatusCode"] >= 400:
                 return False
-        print(f"The file {filepath} already exist!")
-        return True
 
     def batch_files(self, path='', lower_limit=None, upper_limit=None):
         truncate = True
