@@ -35,8 +35,6 @@ class RedemetImages:
                 filepath = f"{radar_tag}/{image_url.split('/')[-1]}"
                 self.radar_images.setdefault(radar_tag, radar)
                 if self.bucket.check_exist_file(filepath):
-                    print(f"The file {filepath} already exists, we will continue without making the request to REDEMET.")
-                    image_list[index]['path'] = None
                     self.radar_images[radar_tag]['s3'] = filepath
             yield radar_tag, self.radar_images[radar_tag]
     
@@ -45,8 +43,8 @@ class RedemetImages:
             print(radar)
             response = send_request(radar['path'])
             return response
-            
-        new_images = [radar for radar in valid_radars if radar['path']]
+
+        new_images = [radar for radar in valid_radars if not radar.get('s3')]
         for image_response,radar in zip(multi_threading(_grab_images, new_images), new_images):
             image_url = radar['path']
             radar_tag = radar['localidade']
