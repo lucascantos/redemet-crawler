@@ -1,8 +1,11 @@
-def retry_request(func, args):
+def retry_request(func):
+    '''
+    Decorator for retrying a function
+    '''
     from time import sleep
     MAX_RETRIES: 3
     wait_time = 2
-    def wrapper(func, args):
+    def wrapper(args, kwargs):
         for i in range(MAX_RETRIES):
             try:
                 response = func(args)

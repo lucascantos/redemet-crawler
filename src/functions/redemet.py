@@ -14,6 +14,9 @@ class RedemetImages:
             self.radar_images = {}
 
     def get_image_list(self):
+        '''
+        Get radar image information from REDEMET Api
+        '''
         params = {
             'api_key': REDEMET_INFO.get('api_key'),
             'anima': 8
@@ -27,6 +30,10 @@ class RedemetImages:
             raise AssertionError(redemet_response.content)
     
     def valid_images(self, image_list):
+        '''
+        Filter only valid images 
+        :params image_list: Image data from radars
+        '''
         for index, radar in enumerate(image_list):
             image_url = radar['path']
             if image_url:    
@@ -38,6 +45,11 @@ class RedemetImages:
             yield radar_tag, self.radar_images[radar_tag]
     
     def download_images(self, valid_radars, debug=False):
+        '''
+        Download images which are not already on the bucket
+        :params valid_radars: Radar image list with a path
+        :params debug: Boolean in case you want to sabe localily or not
+        '''
         def _grab_images(radar):
             response = send_request(radar['path'])
             return response

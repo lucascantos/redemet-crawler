@@ -19,7 +19,9 @@ def make_response(body={'message': 'Success!'}, code=200, cors=False):
 
 def send_request(url, params={}):
     '''
-    
+    Sends an API GET request
+    :params url: String with URL
+    :params params: Request parameters 
     '''
     import requests
     try: 

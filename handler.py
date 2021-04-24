@@ -5,6 +5,9 @@ import json
 from src.functions.redemet import RedemetImages
 
 def redemet_crawler(event=None, context=None):
+    '''
+    Downloads images to bucket
+    '''
     redemet = RedemetImages()
     radar_list = redemet.get_image_list()
     valid_images = dict(redemet.valid_images(radar_list))
@@ -18,6 +21,9 @@ def redemet_crawler(event=None, context=None):
     return True
 
 def check_redemet(event=None, context=None):
+    '''
+    Checks the lates redemet image
+    '''
     from src.helpers.response import make_response
     redemet = RedemetImages()
     radar_list = redemet.get_image_list()
