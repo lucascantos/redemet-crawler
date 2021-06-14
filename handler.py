@@ -4,6 +4,14 @@
 import json
 from src.functions.redemet import RedemetImages
 
+def hello(event=None, context=None):
+    import logging
+    logging.info('Sunny day')
+    logging.warning('Easy buddy')
+    logging.error('AH!')
+    logging.critical("Failure")
+    return 'nice'
+
 def redemet_crawler(event=None, context=None):
     '''
     Downloads images to bucket
